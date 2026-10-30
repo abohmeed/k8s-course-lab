@@ -1,0 +1,17 @@
+# A Pod that mounts the notes claim at /data.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: notes
+spec:
+  containers:
+    - name: shell
+      image: busybox:1.37
+      command: ["sleep", "infinity"]
+      volumeMounts:
+        - name: notes
+          mountPath: /data
+  volumes:
+    - name: notes
+      persistentVolumeClaim:
+        claimName: notes

@@ -1,0 +1,8 @@
+# An ExternalName Service: a DNS alias inside the cluster for a name outside it.
+apiVersion: v1
+kind: Service
+metadata:
+  name: docs
+spec:
+  type: ExternalName
+  externalName: kubernetes.io

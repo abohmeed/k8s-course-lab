@@ -1,0 +1,11 @@
+# Selects the web Pods and allows no ingress at all: every connection to them is dropped.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-web
+spec:
+  podSelector:
+    matchLabels:
+      app: web
+  policyTypes:
+    - Ingress

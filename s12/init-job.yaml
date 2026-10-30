@@ -1,0 +1,36 @@
+# Creates the weatherapp database and the authuser account the auth service logs in with.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mysql-init-job
+spec:
+  backoffLimit: 10
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: mysql-init-container
+          image: mysql:8.4
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: root-password
+            - name: MYSQL_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: auth-password
+            - name: MYSQL_USER
+              value: authuser
+            - name: MYSQL_HOST
+              value: mysql
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              mysql -h"$MYSQL_HOST" -uroot -p"$MYSQL_ROOT_PASSWORD" <<EOF
+              CREATE DATABASE IF NOT EXISTS weatherapp;
+              CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_AUTH_PASSWORD';
+              GRANT ALL PRIVILEGES ON weatherapp.* TO '$MYSQL_USER'@'%';
+              EOF

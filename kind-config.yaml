@@ -1,0 +1,15 @@
+# The course cluster: one control plane, two workers, Kubernetes 1.37.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: k8s-course
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.37.0
+    extraPortMappings:
+      # NodePort labs use 30007, reachable on the laptop at localhost:30007.
+      - containerPort: 30007
+        hostPort: 30007
+  - role: worker
+    image: kindest/node:v1.37.0
+  - role: worker
+    image: kindest/node:v1.37.0

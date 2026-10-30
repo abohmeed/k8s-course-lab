@@ -1,0 +1,11 @@
+# A LoadBalancer Service in front of the web Pods (cloud-provider-kind gives it an external IP).
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: web
+  ports:
+    - port: 80

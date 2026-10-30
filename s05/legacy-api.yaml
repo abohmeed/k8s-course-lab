@@ -1,0 +1,22 @@
+# A Service with no selector, and the EndpointSlice that points it at an address outside the cluster.
+# LEGACY_IP is replaced with the container's address when we apply the file.
+apiVersion: v1
+kind: Service
+metadata:
+  name: legacy-api
+spec:
+  ports:
+    - port: 80
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: legacy-api-1
+  labels:
+    kubernetes.io/service-name: legacy-api
+addressType: IPv4
+ports:
+  - port: 80
+endpoints:
+  - addresses:
+      - LEGACY_IP

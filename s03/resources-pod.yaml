@@ -1,0 +1,16 @@
+# One container with CPU and memory requests and limits.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sized
+spec:
+  containers:
+    - name: app
+      image: nginx:1.29
+      resources:
+        requests:
+          cpu: 100m
+          memory: 64Mi
+        limits:
+          cpu: 200m
+          memory: 128Mi

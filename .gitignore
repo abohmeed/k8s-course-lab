@@ -1,1 +1,6 @@
 db-data
+
+# generated at lab time, never committed
+*.key
+*.crt
+cloud-provider-kind.log

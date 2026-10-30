@@ -1,0 +1,44 @@
+# nginx serves a page that a native sidecar rewrites every five seconds, through a shared emptyDir.
+# Probes check that nginx answers; resources size both containers.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  initContainers:
+    - name: page-writer
+      image: busybox:1.37
+      restartPolicy: Always
+      command: ["sh", "-c", "while true; do echo \"<h1>Hello from $(hostname) at $(date +%T)</h1>\" > /html/index.html; sleep 5; done"]
+      resources:
+        requests: {cpu: 10m, memory: 16Mi}
+        limits: {cpu: 50m, memory: 32Mi}
+      volumeMounts:
+        - name: html
+          mountPath: /html
+  containers:
+    - name: nginx
+      image: nginx:1.29
+      ports:
+        - containerPort: 80
+      resources:
+        requests: {cpu: 100m, memory: 64Mi}
+        limits: {cpu: 200m, memory: 128Mi}
+      startupProbe:
+        httpGet: {path: /, port: 80}
+        periodSeconds: 2
+        failureThreshold: 15
+      readinessProbe:
+        httpGet: {path: /, port: 80}
+        periodSeconds: 5
+      livenessProbe:
+        httpGet: {path: /, port: 80}
+        periodSeconds: 10
+      volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html
+  volumes:
+    - name: html
+      emptyDir: {}

@@ -1,0 +1,10 @@
+# A claim for one gigabyte, on the cluster's default StorageClass.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: notes
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
