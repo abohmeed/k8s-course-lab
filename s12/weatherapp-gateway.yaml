@@ -1,0 +1,15 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: weatherapp-gw
+spec:
+  gatewayClassName: cloud-provider-kind
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: weatherapp.local
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: weatherapp-ui-tls

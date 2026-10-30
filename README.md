@@ -30,7 +30,7 @@ cloud-provider-kind gives Services of type LoadBalancer an external IP and provi
 | s06 | Gateway API: path and host routing, TLS termination |
 | s10 | NetworkPolicy |
 | s11 | StatefulSets: MySQL |
-| s12 | Final project: the WeatherApp database |
+| s12 | Final project: the WeatherApp database and its UI behind a Gateway (HTTPS) |
 | UI, auth, weather, mysql-init, kubernetes | The WeatherApp source and its manifests |
 
 Certificates and keys are created during the labs with openssl and are never committed.
